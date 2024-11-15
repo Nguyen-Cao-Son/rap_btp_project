@@ -1,0 +1,80 @@
+@Metadata.layer: #PARTNER
+@UI: {
+       headerInfo: {
+          typeName : 'Student' ,
+          typeNamePlural: 'Student' ,
+          title : { type : #STANDARD ,  label: 'Student label' , value : 'ID'   } ,
+          description: { type : #STANDARD , label : 'Name' , value: 'Fristname'  }
+         }
+ }
+@Search.searchable: true 
+
+annotate view ZC_STUDENT_500_SONNC with
+{
+  @UI : { facet: [{ id :   'Student' ,
+                    purpose: #STANDARD ,
+                    label: 'Student' ,
+                    type : #IDENTIFICATION_REFERENCE ,
+                    position: 10
+                     } ,
+                { id : 'AcademicResult'  ,
+                purpose: #STANDARD,
+                type : #LINEITEM_REFERENCE,
+                label :'Acadeic Result Details' ,
+                position:  20 ,
+                targetElement: '_acdemicres'
+              }] }
+  @UI: {  lineItem: [{ position: 10 , label: 'Student ID'  }] ,
+          identification: [{ position: 10 , label: 'Student ID'  }] }
+  Id;
+  @UI: {  lineItem: [{ position: 20 , label: 'Frist Name'  }  ] ,
+          identification: [{ position: 20 , label: 'Frist Name'  } ] }
+  @Search : { defaultSearchElement: true  , fuzzinessThreshold: 0.7 ,ranking: #HIGH   }
+
+  Fristname;
+  @UI: {  lineItem: [{ position: 30 , label: 'Last Name'  }] ,
+          identification: [{ position: 30 , label: 'Last Name'  }] }
+  @Search : { defaultSearchElement: true  , fuzzinessThreshold: 0.5 ,ranking: #MEDIUM   }
+  Lastname;
+  @UI: {  lineItem: [{ position: 40 , label: 'Age'  }] ,
+          identification: [{ position: 40 , label: 'Age'  }] }
+  Age;
+  @UI: {  lineItem: [{ position: 50 , label: 'Course'  }] ,
+          identification: [{ position: 50 , label: 'Course'  }] }
+  Course;
+
+  @UI: {  lineItem: [{ position: 60 , label: 'Course duration'   }
+           ] ,
+          identification: [{ position: 60 , label: 'Course duration' , invocationGrouping: #CHANGE_SET }] }
+  Courseduration;
+  @UI: {  lineItem: [{ position: 70 ,  label: 'Status'   } ,
+
+       {  type: #FOR_ACTION , dataAction: 'ToggelAdmitted' , label: 'Toggel Admitted' } ,
+       {  type: #FOR_ACTION , dataAction: 'setAdmitted' , label: 'Set Admitted'   }
+  ] ,
+        identification: [{ position: 70 ,  label: 'Status'  } ,
+       {  type: #FOR_ACTION , dataAction: 'ToggelAdmitted' , label: 'Toggel Admitted'  } ,
+       {  type: #FOR_ACTION , dataAction: 'setAdmitted' , label: 'Set Admitted'  }
+  ] }
+  Status;
+  @UI: {  lineItem: [{ position: 80 , label: 'Gender'  }] ,
+          identification: [{ position: 80 , label: 'Gender'  }] }
+  @Consumption.valueHelpDefinition: [{ entity : { name : 'ZI_READ_DOMAIN_SONNC' , element: 'Value' } ,
+                                       distinctValues: true ,
+                                       additionalBinding: [{ localElement: 'Genderdesc' , element: 'Description' ,
+                                       usage : #FILTER_AND_RESULT
+                                       }] ,
+                                       useForValidation: true
+   }]
+  Gender;
+  @UI: {  lineItem: [{ position: 85 , label: 'Short Desc'  }] ,
+          identification: [{ position: 85 , label :'Short Desc' }] }
+  Genderdesc;
+  @UI: {  lineItem: [{ position: 90 , label: 'DOB'  }] ,
+         identification: [{ position: 90 , label: 'DOB'  }] }
+  Dob;
+  @UI :  { lineItem: [{ position : 95 , label : 'Bonus'  }] ,
+           identification: [{ position: 100 , label: 'Bonus'   }] }
+  
+  BonusAmount;
+}

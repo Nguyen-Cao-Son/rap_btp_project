@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service definition for student  1'
+define service ZEXPOSE_STUDENT1 {
+  expose ZC_STUDENT_500_SONNC;
+  expose ZI_AR_SONNC          as AcadeicResult;
+}

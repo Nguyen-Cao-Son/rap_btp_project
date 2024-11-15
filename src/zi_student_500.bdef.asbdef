@@ -1,0 +1,65 @@
+managed implementation in class zbp_i_student_500 unique ;
+strict ( 2 );
+//with draft ;
+
+define behavior for ZI_STUDENT_500 alias student
+persistent table ztb_im_rap_500
+//draft table ztb_draf_rap_son
+lock master
+//total etag Locallastchangeat
+authorization master ( global ,  instance )
+{
+  create;
+  update;
+  delete;
+/*--------DRAFT-----------*/
+//  draft action Edit  ;
+//  draft action Resume ;
+//  draft action Activate ;
+//  draft action Discard  ;
+//  draft action AdditionalSave ;
+/*--------DRAFT-----------*/
+  // asocutation action
+  association _acdemicres { create; }
+  field ( numbering : managed, readonly ) Id;
+
+  //action Setadmitted
+  action ( features : instance  ) ToggelAdmitted result [1] $self;
+  action ( features : instance ,  authorization : update ) setAdmitted result [1] $self;
+
+  validation validateAge on save { field Age; create; update; }
+  //side effect s
+  side effects { field Course affects field Courseduration; }
+  //determination update course duration
+  determination updateCourseDurationSave on save { field Course; }
+  determination updateCourseDurationModify on modify { field Course; }
+
+  mapping for ztb_im_rap_500 corresponding
+    {
+      Id                = id;
+      Fristname         = fristname;
+      Lastname          = lastname;
+      Age               = age;
+      Course            = course;
+      Courseduration    = courseduration;
+      Status            = status;
+      Gender            = gender;
+      Dob               = dob;
+      Locallastchangeat = locallastchangeat;
+      Locallastchangeby = locallastchangeby;
+    }
+}
+
+define behavior for ZI_AR_SONNC alias AcademicResult
+persistent table ztb_course_sonnc
+//draft table ztb_draf_ar
+lock dependent by _student
+authorization dependent by _student
+//etag dependent by _student
+{
+  update;
+  delete;
+  association _student;
+  field ( readonly ) Id, course_desc, semester_desc, semres_desc;
+  //action Setadmitted
+}
